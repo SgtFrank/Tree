@@ -68,6 +68,7 @@
 </head>
 
 <body>
+    <audio id="bg-music" loop crossorigin="anonymous"></audio>
     <div id="loader"><div class="spinner"></div></div>
     <div id="canvas-container"></div>
 
@@ -77,6 +78,7 @@
                 <button id="btn-bg-music" class="control-btn">上传音乐</button>
                 <button id="btn-add-photo" class="control-btn">上传照片</button>
                 <button id="btn-write-letter" class="control-btn">上传书信</button>
+                <button id="btn-play-music" class="control-btn">播放音乐</button>
             </div>
             <div class="control-col" id="col-system">
                 <button id="btn-import" class="control-btn">导入网页</button>
@@ -834,8 +836,38 @@
                 }
             };
         }
+        js
+        document.getElementById('btn-bg-music').onclick = () => {
+  musicInput.click();
+};
+        js
+        const playBtn = document.getElementById('btn-play-music');
+let musicReady = false;
+
+musicInput.onchange = (e) => {
+  if (e.target.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      audioEl.src = evt.target.result;
+      musicReady = true;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  }
+};
+
+playBtn.onclick = () => {
+  if (!musicReady) {
+    alert('请先选择音乐文件');
+    return;
+  }
+  audioEl.play().catch(err => {
+    alert('iPhone 需要手动点击才能播放音乐');
+    console.warn(err);
+  });
+};
 
         init();
     </script>
 </body>
+
 </html>
